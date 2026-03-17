@@ -1,0 +1,219 @@
+{
+  "workflows": [
+    {
+      "id": "93c0ec5d-6f57-49be-a695-b343676c7eb0",
+      "name": "Expense Approval",
+      "description": "Multi-level expense approval with finance and CEO sign-off",
+      "version": 3,
+      "is_active": true,
+      "input_schema": {
+        "amount": {
+          "type": "number",
+          "required": true
+        },
+        "country": {
+          "type": "string",
+          "required": true
+        },
+        "department": {
+          "type": "string",
+          "required": false
+        },
+        "priority": {
+          "type": "string",
+          "required": true,
+          "allowed_values": [
+            "High",
+            "Medium",
+            "Low"
+          ]
+        }
+      },
+      "start_step_id": "74c85cc9-6686-4fa7-a161-8a82edc5a350",
+      "created_at": "2026-01-10T08:00:00Z",
+      "updated_at": "2026-03-01T10:00:00Z"
+    },
+    {
+      "id": "ceeb4227-6842-49f0-8830-e93d89182e81",
+      "name": "Employee Onboarding",
+      "description": "New hire onboarding process",
+      "version": 1,
+      "is_active": true,
+      "input_schema": {
+        "employee_name": {
+          "type": "string",
+          "required": true
+        },
+        "department": {
+          "type": "string",
+          "required": true
+        },
+        "start_date": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "start_step_id": "207ce934-5122-4cf8-8253-e5b5655f8dba",
+      "created_at": "2026-02-01T09:00:00Z",
+      "updated_at": "2026-02-01T09:00:00Z"
+    }
+  ],
+  "steps": [
+    {
+      "id": "74c85cc9-6686-4fa7-a161-8a82edc5a350",
+      "workflow_id": "93c0ec5d-6f57-49be-a695-b343676c7eb0",
+      "name": "Manager Approval",
+      "step_type": "approval",
+      "order": 1,
+      "metadata": {
+        "assignee_email": "manager@example.com"
+      },
+      "created_at": "2026-03-17T17:10:46.789Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "68ed8a31-e82c-41ea-b742-c34d406e52af",
+      "workflow_id": "93c0ec5d-6f57-49be-a695-b343676c7eb0",
+      "name": "Finance Notification",
+      "step_type": "notification",
+      "order": 2,
+      "metadata": {
+        "notification_channel": "email"
+      },
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "4ea6dc27-91de-4c5c-82a2-7a13398ce189",
+      "workflow_id": "93c0ec5d-6f57-49be-a695-b343676c7eb0",
+      "name": "CEO Approval",
+      "step_type": "approval",
+      "order": 3,
+      "metadata": {
+        "assignee_email": "ceo@example.com"
+      },
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "4c879d60-e447-4359-9c9c-7e8e33d7ccb6",
+      "workflow_id": "93c0ec5d-6f57-49be-a695-b343676c7eb0",
+      "name": "Task Rejection",
+      "step_type": "task",
+      "order": 4,
+      "metadata": {
+        "action": "reject_expense"
+      },
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "207ce934-5122-4cf8-8253-e5b5655f8dba",
+      "workflow_id": "ceeb4227-6842-49f0-8830-e93d89182e81",
+      "name": "Send Welcome Email",
+      "step_type": "notification",
+      "order": 1,
+      "metadata": {
+        "notification_channel": "email"
+      },
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "72da2cc3-32e9-47fa-9027-05b1dfbe33f6",
+      "workflow_id": "ceeb4227-6842-49f0-8830-e93d89182e81",
+      "name": "Setup IT Access",
+      "step_type": "task",
+      "order": 2,
+      "metadata": {
+        "action": "provision_accounts"
+      },
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    }
+  ],
+  "rules": [
+    {
+      "id": "77a05b9d-5e02-40e1-9a62-f8d985348061",
+      "step_id": "74c85cc9-6686-4fa7-a161-8a82edc5a350",
+      "priority": 1,
+      "condition": "amount > 100 && country == 'US' && priority == 'High'",
+      "next_step_id": "68ed8a31-e82c-41ea-b742-c34d406e52af",
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "671f4f86-f49a-459d-889f-66ed9df9f53b",
+      "step_id": "74c85cc9-6686-4fa7-a161-8a82edc5a350",
+      "priority": 2,
+      "condition": "amount <= 100 || department == 'HR'",
+      "next_step_id": "4ea6dc27-91de-4c5c-82a2-7a13398ce189",
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "33278224-7489-4d9c-9a2e-8359e610b1fe",
+      "step_id": "74c85cc9-6686-4fa7-a161-8a82edc5a350",
+      "priority": 3,
+      "condition": "priority == 'Low' && country != 'US'",
+      "next_step_id": "4c879d60-e447-4359-9c9c-7e8e33d7ccb6",
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "7bb99960-2c02-49aa-aeb2-d6f6836758dd",
+      "step_id": "74c85cc9-6686-4fa7-a161-8a82edc5a350",
+      "priority": 4,
+      "condition": "DEFAULT",
+      "next_step_id": "4c879d60-e447-4359-9c9c-7e8e33d7ccb6",
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "784045a1-82d4-4571-8211-ffa5d99a241b",
+      "step_id": "68ed8a31-e82c-41ea-b742-c34d406e52af",
+      "priority": 1,
+      "condition": "DEFAULT",
+      "next_step_id": "4ea6dc27-91de-4c5c-82a2-7a13398ce189",
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "20cbee79-8e6a-4dba-91c8-9b911c00a814",
+      "step_id": "4ea6dc27-91de-4c5c-82a2-7a13398ce189",
+      "priority": 1,
+      "condition": "DEFAULT",
+      "next_step_id": null,
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "c565ed45-3fa9-49e9-91eb-e21893f622c3",
+      "step_id": "4c879d60-e447-4359-9c9c-7e8e33d7ccb6",
+      "priority": 1,
+      "condition": "DEFAULT",
+      "next_step_id": null,
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "81968a16-32a4-452b-8786-78fc97994af4",
+      "step_id": "207ce934-5122-4cf8-8253-e5b5655f8dba",
+      "priority": 1,
+      "condition": "DEFAULT",
+      "next_step_id": "72da2cc3-32e9-47fa-9027-05b1dfbe33f6",
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    },
+    {
+      "id": "fbef61b7-d21e-44dd-ad62-bd5faf8a5b1a",
+      "step_id": "72da2cc3-32e9-47fa-9027-05b1dfbe33f6",
+      "priority": 1,
+      "condition": "DEFAULT",
+      "next_step_id": null,
+      "created_at": "2026-03-17T17:10:46.791Z",
+      "updated_at": "2026-03-17T17:10:46.791Z"
+    }
+  ],
+  "executions": []
+}

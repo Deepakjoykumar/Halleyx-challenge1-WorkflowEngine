@@ -1,0 +1,11 @@
+{
+  "name": "halleyx-workflow-engine",
+  "version": "1.0.0",
+  "description": "Halleyx Full Stack Workflow Engine",
+  "scripts": {
+    "backend": "cd backend && npm install && npm start",
+    "frontend": "cd frontend && npm install && npm start",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install"
+  },
+  "private": true
+}
